@@ -25,9 +25,11 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.support.v4.view.ViewCompat;
+import android.view.View;
 import android.view.animation.Animation;
-import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.view.ViewCompat;
 
 /**
  * Private class created to work around issues with AnimationListeners being
@@ -36,7 +38,7 @@ import android.widget.ImageView;
  *
  * @hide
  */
-class CircleImageView extends ImageView {
+class CircleImageView extends AppCompatImageView {
 
     private static final int KEY_SHADOW_COLOR = 0x1E000000;
     private static final int FILL_SHADOW_COLOR = 0x3D000000;
@@ -65,7 +67,7 @@ class CircleImageView extends ImageView {
         } else {
             OvalShape oval = new OvalShadow(mShadowRadius, diameter);
             circle = new ShapeDrawable(oval);
-            ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_SOFTWARE, circle.getPaint());
+            setLayerType(View.LAYER_TYPE_SOFTWARE, circle.getPaint());
             circle.getPaint().setShadowLayer(mShadowRadius, shadowXOffset, shadowYOffset,
                     KEY_SHADOW_COLOR);
             final int padding = (int) mShadowRadius;
@@ -77,15 +79,15 @@ class CircleImageView extends ImageView {
     }
 
     private boolean elevationSupported() {
-        return android.os.Build.VERSION.SDK_INT >= 21;
+        return true;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (!elevationSupported()) {
-            setMeasuredDimension(getMeasuredWidth() + mShadowRadius*2, getMeasuredHeight()
-                    + mShadowRadius*2);
+            setMeasuredDimension(getMeasuredWidth() + mShadowRadius * 2, getMeasuredHeight()
+                    + mShadowRadius * 2);
         }
     }
 
@@ -131,9 +133,9 @@ class CircleImageView extends ImageView {
             mShadowRadius = shadowRadius;
             mCircleDiameter = circleDiameter;
             mRadialGradient = new RadialGradient(mCircleDiameter / 2, mCircleDiameter / 2,
-                    mShadowRadius, new int[] {
-                            FILL_SHADOW_COLOR, Color.TRANSPARENT
-                    }, null, Shader.TileMode.CLAMP);
+                    mShadowRadius, new int[]{
+                    FILL_SHADOW_COLOR, Color.TRANSPARENT
+            }, null, Shader.TileMode.CLAMP);
             mShadowPaint.setShader(mRadialGradient);
         }
 

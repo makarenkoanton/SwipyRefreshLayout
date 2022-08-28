@@ -1,11 +1,12 @@
 package com.orangegangsters.github.swipyrefreshlayout;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.orangegangsters.github.swiperefreshlayout.R;
 import com.orangegangsters.github.swiperefreshlayout.databinding.ActivityMainBinding;
@@ -57,17 +58,9 @@ public class MainActivity extends AppCompatActivity implements SwipyRefreshLayou
                 break;
             case R.id.button_refresh:
                 mBinding.swipyrefreshlayout.setRefreshing(true);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Hide the refresh after 2sec
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mBinding.swipyrefreshlayout.setRefreshing(false);
-                            }
-                        });
-                    }
+                new Handler().postDelayed(() -> {
+                    //Hide the refresh after 2sec
+                    MainActivity.this.runOnUiThread(() -> mBinding.swipyrefreshlayout.setRefreshing(false));
                 }, 2000);
                 break;
         }
@@ -81,17 +74,9 @@ public class MainActivity extends AppCompatActivity implements SwipyRefreshLayou
     public void onRefresh(SwipyRefreshLayoutDirection direction) {
         Log.d("MainActivity", "Refresh triggered at "
                 + (direction == SwipyRefreshLayoutDirection.TOP ? "top" : "bottom"));
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Hide the refresh after 2sec
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mBinding.swipyrefreshlayout.setRefreshing(false);
-                    }
-                });
-            }
+        new Handler().postDelayed(() -> {
+            //Hide the refresh after 2sec
+            MainActivity.this.runOnUiThread(() -> mBinding.swipyrefreshlayout.setRefreshing(false));
         }, DISMISS_TIMEOUT);
     }
 }
